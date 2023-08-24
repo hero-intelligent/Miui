@@ -115,7 +115,7 @@ cp -r output device && sudo rm -rf output
 
 
 
-
+# USELESS BELOW!
 --------USELESS-----------------
 ```bash
 # wget https://bigota.d.miui.com/V14.0.23.0.TMKCNXM/miui_SOCRATES_V14.0.23.0.TMKCNXM_b423194d4e_13.0.zip
