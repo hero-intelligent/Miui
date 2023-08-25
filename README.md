@@ -69,12 +69,45 @@ cp -r output device
 OK, the directories `output` and `device` are the same as each other in content, as the directory `device` is a copy of `output`. Besides, modifying `output` directory needs root access. So, we will be focusing on the `device` directory, and the other one will sit there untouched for backup or for future use.
 
 
+# Build TWRP
 
+I've kind of gave up!
 
+`repo.Dockerfile`
 
+```Dockerfile
+FROM ubuntu:22.04
 
+RUN apt update && apt upgrade -y && apt install rsync repo -y
 
+RUN git config --global user.email "you@example.com" && git config --global user.name "Your Name"
 
+WORKDIR /workspace
+
+```
+
+```bash
+sudo docker build -t repo -f repo.Dockerfile .
+sudo docker run -it --rm -v ~/Miui/workspace:/workspace repo bash
+```
+
+```bash
+repo init --depth=1 --no-repo-verify -u https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-12.1 -g default,-mips,-darwin,-notdefault​
+
+repo sync -c --no-clone-bundle --no-tags --optimized-fetch --prune --force-sync -j8
+
+exit
+```
+
+```bash
+sudo docker run -it --rm -v ~/Miui/workspace:/workspace -v ~/Miui/device:/workspace/device repo bash
+```
+
+```bash
+. build/envsetup.sh
+lunch
+# TO BE CONTINUED
+```
 
 
 
