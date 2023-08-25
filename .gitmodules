@@ -1,0 +1,4 @@
+[submodule "kernel"]
+	path = kernel
+	url = https://github.com/MiCode/Xiaomi_Kernel_OpenSource.git
+	branch = socrates-t-oss
