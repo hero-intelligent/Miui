@@ -14,7 +14,13 @@ This tutorial, or journal, is started with a non-modified phone with older offic
 
 Use Linux with GUI support. In my case it is freshly installed Debian 12.
 
-It is better to use Docker to keep your system clean, unless in unsupported circumstances. So, please install it in your system in advance. you can install it using this command: `curl -fsSL get.docker.com | bash`
+It is better to use Docker to keep your system clean, unless in unsupported circumstances. So, please install it in your system in advance. you can install it following the commands below.
+```bash
+curl -fsSL get.docker.com | bash
+sudo groupadd docker
+sudo usermod -aG docker $USER
+newgrp docker
+```
 
 **PREREQUISITES:**
 
@@ -49,14 +55,14 @@ RUN pip install twrpdtgen
 2. run the following command to build an image. It will take some time depending on your network access:
 
 ```bash
-sudo docker build -t twrpdtgen -f ./twrpdtgen.Dockerfile
+docker build -t twrpdtgen -f ./twrpdtgen.Dockerfile
 ```
 
 3. run the following command to build the device tree:
 ```bash
 mkdir device
 
-sudo docker run -it --rm \
+docker run -it --rm \
 -v ~/Miui/socrates_images_V14.0.23.0.TMKCNXM_13.0/images/recovery.img:/images/recovery.img \
 -v ~/Miui/output:/output \
 twrpdtgen \
@@ -87,8 +93,8 @@ WORKDIR /workspace
 ```
 
 ```bash
-sudo docker build -t repo -f repo.Dockerfile .
-sudo docker run -it --rm -v ~/Miui/workspace:/workspace repo bash
+docker build -t repo -f repo.Dockerfile .
+docker run -it --rm -v ~/Miui/workspace:/workspace repo bash
 ```
 
 ```bash
@@ -100,7 +106,7 @@ exit
 ```
 
 ```bash
-sudo docker run -it --rm -v ~/Miui/workspace:/workspace -v ~/Miui/device:/workspace/device repo bash
+docker run -it --rm -v ~/Miui/workspace:/workspace -v ~/Miui/device:/workspace/device repo bash
 ```
 
 ```bash
