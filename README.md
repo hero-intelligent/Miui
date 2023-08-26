@@ -75,11 +75,11 @@ cp -r output device
 OK, the directories `output` and `device` are the same as each other in content, as the directory `device` is a copy of `output`. Besides, modifying `output` directory needs root access. So, we will be focusing on the `device` directory, and the other one will sit there untouched for backup or for future use.
 
 
-# Build TWRP
+# Pull Source Code and Build TWRP attempt (NOT SUCCESS YET)
 
-I've kind of gave up!
+These steps are based on [this turtorial](https://forum.xda-developers.com/t/how-to-build-basic-twrp-for-a-android-device-android-9.4562703/)
 
-`repo.Dockerfile`
+1. To pull the source code about Android, you need to have a repository manager called `repo`. To install it for convenience and tidiness, I'd like to build a dockerfile. The content of `repo.Dockerfile` is as follows:
 
 ```Dockerfile
 FROM ubuntu:22.04
@@ -92,10 +92,13 @@ WORKDIR /workspace
 
 ```
 
+2. build the image, run the container.
+
 ```bash
 docker build -t repo -f repo.Dockerfile .
 docker run -it --rm -v ~/Miui/workspace:/workspace repo bash
 ```
+3. Now you should be inside the container. Execute these commands to pull or synchronize the source code.
 
 ```bash
 repo init --depth=1 --no-repo-verify -u https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git -b twrp-12.1 -g default,-mips,-darwin,-notdefault​
@@ -105,13 +108,17 @@ repo sync -c --no-clone-bundle --no-tags --optimized-fetch --prune --force-sync 
 exit
 ```
 
+4. Now you should be outside the container, and the container should be stopped and destroyed. This is because we have to another container again to place the device tree. The reason I run the container twice is that I can mount device tree and run it again and again to have build attempts.
 ```bash
 docker run -it --rm -v ~/Miui/workspace:/workspace -v ~/Miui/device:/workspace/device repo bash
 ```
 
+5. Now you should be inside the container again. Have endless modifications and build attempts........
+
 ```bash
 . build/envsetup.sh
 lunch
+make recoveryimage
 # TO BE CONTINUED
 ```
 
